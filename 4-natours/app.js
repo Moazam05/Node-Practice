@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
   res.send('Natours API is running...');
 });
 
+// All Tours
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -24,6 +25,27 @@ app.get('/api/v1/tours', (req, res) => {
   });
 });
 
+// Get Single Tour
+app.get('/api/v1/tours/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const tour = tours.find((el) => el.id === id);
+
+  // if (id > tours.length)
+  if (!tour)
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour,
+    },
+  });
+});
+
+// Create New Tour
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
