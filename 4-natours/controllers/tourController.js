@@ -4,6 +4,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+// Check ID Middleware
 exports.checkID = (req, res, next, val) => {
   console.log(`The tour id is: ${val}`);
 
@@ -15,6 +16,17 @@ exports.checkID = (req, res, next, val) => {
       message: 'Invalid ID',
     });
 
+  next();
+};
+
+// Check body Middleware
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price',
+    });
+  }
   next();
 };
 
