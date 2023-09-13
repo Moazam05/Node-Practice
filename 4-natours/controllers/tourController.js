@@ -104,6 +104,8 @@ exports.getAllTours = async (req, res) => {
     const query = Tour.find(queryObj);
 
     const tours = await query;
+    // SORT by price
+    tours.sort((a, b) => a.price - b.price);
 
     // Special Method
     // const tours = Tour.find()
