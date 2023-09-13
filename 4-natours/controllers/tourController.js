@@ -96,7 +96,21 @@ const Tour = require('../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    const queryObj = { ...req.query };
+    const excludedFiles = ['sort', 'page', 'limit', 'fields'];
+    excludedFiles.forEach((el) => delete queryObj[el]);
+
+    // Normal Way
+    const query = Tour.find(queryObj);
+
+    const tours = await query;
+
+    // Special Method
+    // const tours = Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
 
     res.status(200).json({
       status: 'success',
