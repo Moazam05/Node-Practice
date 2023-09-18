@@ -96,16 +96,38 @@ const Tour = require('../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
+    // 1A) Filtering
     const queryObj = { ...req.query };
     const excludedFiles = ['sort', 'page', 'limit', 'fields'];
     excludedFiles.forEach((el) => delete queryObj[el]);
 
+    // 1B) Advanced Filter
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    // gte, gt, lte, lt
+
     // Normal Way
-    const query = Tour.find(queryObj);
+    let query = Tour.find(JSON.parse(queryStr));
+
+    // 2 Sorting
+    if (req.query.sort) {
+      query = query.sort(req.query.sort);
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+      // sort('price ratingsAverage')
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    // Field Limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
+    }
 
     const tours = await query;
-    // SORT by price
-    tours.sort((a, b) => a.price - b.price);
 
     // Special Method
     // const tours = Tour.find()
