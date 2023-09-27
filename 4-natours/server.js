@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const app = require('./app');
 
 process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! 🔥 Shutting down...');
@@ -27,8 +28,6 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
   console.log('Environment:', process.env.NODE_ENV);
 });
-
-const app = require('./app');
 
 // $env:NODE_ENV="production"
 
