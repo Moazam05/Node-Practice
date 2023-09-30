@@ -9,10 +9,11 @@ const router = express.Router();
 const { getAllUsers, createUser, getUser, updateUser, deleteUser } =
   userController;
 
-const { signup } = authController;
+const { signup, login } = authController;
 
 // AUTH CONTROLLER
 router.post('/signup', signup);
+router.post('/login', login);
 
 // USER CONTROLLER
 router.route('/').get(getAllUsers).post(createUser);
