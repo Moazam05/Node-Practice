@@ -9,11 +9,14 @@ const router = express.Router();
 const { getAllUsers, createUser, getUser, updateUser, deleteUser } =
   userController;
 
-const { signup, login } = authController;
+const { signup, login, forgotPassword, resetPassword } = authController;
 
 // AUTH CONTROLLER
 router.post('/signup', signup);
 router.post('/login', login);
+
+router.post('/forgotPassword', forgotPassword);
+router.post('/resetPassword', resetPassword);
 
 // USER CONTROLLER
 router.route('/').get(getAllUsers).post(createUser);
