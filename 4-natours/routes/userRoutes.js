@@ -16,7 +16,7 @@ router.post('/signup', signup);
 router.post('/login', login);
 
 router.post('/forgotPassword', forgotPassword);
-router.post('/resetPassword', resetPassword);
+router.patch('/resetPassword/:token', resetPassword);
 
 // USER CONTROLLER
 router.route('/').get(getAllUsers).post(createUser);
