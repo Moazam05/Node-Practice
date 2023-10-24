@@ -140,16 +140,6 @@ tourSchema.pre('save', function (next) {
 //   next();
 // });
 
-// tourSchema.pre('save', function (next) {
-//   console.log('Will save document...');
-//   next();
-// });
-
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
 // QUERY MIDDLEWARE
 // tourSchema.pre('find', function (next) {
 tourSchema.pre(/^find/, function (next) {
@@ -157,8 +147,22 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+  next();
+});
+
+// Time Checking
+tourSchema.pre(/^find/, function (next) {
+  this.start = Date.now();
+  next();
+});
+
 tourSchema.post(/^find/, function (docs, next) {
-  // console.log(docs);
+  console.log(`Query took ${Date.now() - this.start} milliseconds!`);
   next();
 });
 
