@@ -3,6 +3,7 @@ const express = require('express');
 // Custom Imports
 const tourController = require('../controllers/tourController');
 const authController = require('../controllers/authController');
+const reviewRouter = require('../routes/reviewRoutes');
 
 const {
   getAllTours,
@@ -19,6 +20,9 @@ const {
 const { protect, restrictTo } = authController;
 
 const router = express.Router();
+
+// Nested Routes
+router.use('/:tourId/reviews', reviewRouter);
 
 // router.param('id', checkID);
 
