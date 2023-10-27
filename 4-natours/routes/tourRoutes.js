@@ -23,6 +23,10 @@ router
   );
 
 router
+  .route('/tour-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+
+router
   .route('/')
   .get(tourController.getAllTours)
   .post(
