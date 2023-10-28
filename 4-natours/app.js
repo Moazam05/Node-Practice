@@ -1,6 +1,7 @@
 // 3rd party modules
 const express = require('express');
 const morgan = require('morgan');
+const path = require('path');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
@@ -17,7 +18,15 @@ const globalErrorHandler = require('./controllers/errorController');
 dotenv.config({ path: './config.env' });
 
 const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // 1 GLOBAL MIDDLEWARE
+// Serving static files
+// app.use(express.static(`${__dirname}/public`));
+app.set(express.static, path.join(__dirname, 'public'));
+
 // Set security HTTP headers
 app.use(helmet());
 
@@ -57,20 +66,18 @@ app.use(
   })
 );
 
-// Serving static files
-app.use(express.static(`${__dirname}/public`));
-
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
 
+// 3 ROUTES
 app.get('/', (req, res) => {
-  res.send('Natours API is running...');
+  // res.send('Natours API is running...');
+  res.status(200).render('base');
 });
 
-// 3 ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
