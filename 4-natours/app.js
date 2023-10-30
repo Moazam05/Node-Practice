@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -28,7 +29,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(`${__dirname}/public`));
 
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
+app.use(cors());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
