@@ -27,6 +27,7 @@ const login = async (email, password) => {
 
     if (res.data.status === 'success') {
       showAlert('success', 'Logged in successfully!');
+      document.cookie = `jwt=${res.data.token}; path=/`;
       window.setTimeout(() => {
         location.assign('/');
       }, 1500);
@@ -55,7 +56,6 @@ const logout = async () => {
 
     if (res.data.status === 'success') location.reload(true);
   } catch (error) {
-    // console.log(error.response);
     showAlert('error', 'Error logging out! Try again.');
   }
 };
